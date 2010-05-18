@@ -1,0 +1,23 @@
+buy eggs
+buy icecream
+buy meat
+buy bread
+buy foil
+buy diapers
+buy beer
+buy wine
+buy milk
+buy apples
+buy bananas
+buy
+some
+one 
+two
+three
+four
+five
+six
+seven
+eight
+nine
+
