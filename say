@@ -1,0 +1,4 @@
+#! /bin/bash
+# to install festival do
+# sudo apt-get install festvox-16k
+echo \(SayText \"$1\"\) | festival --pipe
