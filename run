@@ -1,3 +1,3 @@
 #! /bin/bash
 PATH=$PATH:~/Projects/SR/bin
-pocketsphinx_continuous -hmm wsj_all_sc.cd_semi_5000 -dict $1.dic -fsg $1.fsg
+pocketsphinx_continuous -hmm wsj_all_sc.cd_semi_5000 -dict $1.dic -lm $1.lm
