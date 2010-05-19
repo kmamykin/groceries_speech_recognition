@@ -1,0 +1,2 @@
+#! /usr/bin/env bash 
+awk '{ if( $5 !~ /^\s*$/ ) {print $5} }'

@@ -1,0 +1,10 @@
+#JSGF V1.0;
+
+grammar pizza;
+
+public <startPizza> = i want to order a <size> pizza with <topping>;
+
+<size> = small | medium | large;
+
+<topping> = pepperoni | mushrooms | anchovies;
+
