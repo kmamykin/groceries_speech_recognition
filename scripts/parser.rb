@@ -26,7 +26,8 @@ end
 
 def cancel_previous_match
   if @previous_match
-    puts "Cancelling"
+    puts "Cancelling " + @previous_match
+    say("cancelling " + @previous_match)
     @previous_match = nil
   end
 end
@@ -35,6 +36,7 @@ def save_match(match_text)
   if @previous_match
     send_match(@previous_match)
   end
+  say("will buy " + match_text)
   @previous_match = match_text
 end
 
@@ -43,18 +45,16 @@ def handle_recognized_utterance(text)
     when /NO/
       puts "Recognized NO"
       cancel_previous_match
-      say("ok")
     when /FUCK NO/
       puts "Recognized FUCK NO"
-      cancel_previous_match
       say("I love you too")
+      cancel_previous_match
     when /^.*BUY (.*)$/
       puts "Recognized #{$1}"
-      say($1)
       save_match($1)
     else
       puts "Unrecognized #{text}"
-      say("I am sorry I cant do that")
+      #say("huh?")
   end
 end
 
