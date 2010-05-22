@@ -1,5 +1,8 @@
 #!/usr/bin/env ruby
 
+require 'net/http'
+require 'uri'
+
 @previous_match = nil
 
 def start_listening
@@ -22,6 +25,7 @@ end
 
 def send_match(text)
   puts "Sending #{text}"
+  Net::HTTP.get_print(URI.parse('http://srgroceries.heroku.com/recognized?name=' + URI::escape(text.downcase)))
 end
 
 def cancel_previous_match
@@ -54,7 +58,7 @@ def handle_recognized_utterance(text)
       save_match($1)
     else
       puts "Unrecognized #{text}"
-      #say("huh?")
+    #say("huh?")
   end
 end
 
