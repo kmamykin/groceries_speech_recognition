@@ -3,6 +3,8 @@
 require 'net/http'
 require 'uri'
 
+HOST = 'home-assistant.heroku.com'
+
 @previous_match = nil
 
 def start_listening
@@ -23,31 +25,40 @@ def say(text)
   system(cmd)
 end
 
+def do_post(command, message)
+  puts "Sending #{command} #{message}"
+  res = Net::HTTP.post_form(URI.parse("http://#{HOST}/recognized"),
+  {:command => command, :message => message.downcase})
+  puts res.body
+  #say("will buy " + message)
+end
+
 def send_match(text)
-  puts "Sending #{text}"
-  Net::HTTP.get_print(URI.parse('http://srgroceries.heroku.com/recognized?name=' + URI::escape(text.downcase)))
+  @previous_match = text
+  do_post('add', text)
 end
 
 def cancel_previous_match
   if @previous_match
     puts "Cancelling " + @previous_match
-    say("cancelling " + @previous_match)
+    do_post('delete', @previous_match)
     @previous_match = nil
   end
 end
 
-def save_match(match_text)
-  if @previous_match
-    send_match(@previous_match)
-  end
-  say("will buy " + match_text)
-  @previous_match = match_text
-end
+#def send_match(match_text)
+##  if @previous_match
+##    send_match(@previous_match)
+##  end
+#end
 
 def handle_recognized_utterance(text)
   case text
     when /NO/
       puts "Recognized NO"
+      cancel_previous_match
+    when /CANCEL/
+      puts "Recognized CANCEL"
       cancel_previous_match
     when /FUCK NO/
       puts "Recognized FUCK NO"
@@ -55,7 +66,7 @@ def handle_recognized_utterance(text)
       cancel_previous_match
     when /^.*BUY (.*)$/
       puts "Recognized #{$1}"
-      save_match($1)
+      send_match(text)
     else
       puts "Unrecognized #{text}"
     #say("huh?")
