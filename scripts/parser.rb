@@ -31,7 +31,7 @@ def do_post(command, message)
   res = Net::HTTP.post_form(URI.parse("http://#{HOST}/recognized"),
   {:command => command, :message => message.downcase})
   puts res.body
-  #say("will buy " + message)
+  say(res.body)
 end
 
 def send_match(text)
@@ -65,6 +65,9 @@ def handle_recognized_utterance(text)
       puts "Recognized FUCK NO"
       say("I love you too")
       cancel_previous_match
+    when /^WEATHER$/
+      puts "Recognized WEATHER"
+      send_match(text + " 10022")
     when /^.*BUY (.*)$/
       puts "Recognized #{$1}"
       send_match(text)
