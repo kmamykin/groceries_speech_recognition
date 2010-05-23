@@ -2,9 +2,10 @@
 
 require 'net/http'
 require 'uri'
+require 'json'
 
-HOST = 'home-assistant.heroku.com'
-#HOST = '127.0.0.1:3002'
+#HOST = 'home-assistant.heroku.com'
+HOST = '127.0.0.1:3002'
 
 @previous_match = nil
 
@@ -21,6 +22,7 @@ def indicate_readiness
 end
 
 def say(text)
+  text ||= ''
   cmd = 'echo \\(SayText \\"' + text + '\\"\\) | festival --pipe'
   puts cmd
   system(cmd)
@@ -28,10 +30,15 @@ end
 
 def do_post(command, message)
   puts "Sending #{command} #{message}"
-  res = Net::HTTP.post_form(URI.parse("http://#{HOST}/recognized"),
-  {:command => command, :message => message.downcase})
-  puts res.body
-  say(res.body)
+  body = Net::HTTP.post_form(URI.parse("http://#{HOST}/recognized"),
+        {:command => command, :message => message.downcase}).body
+  puts body
+  return if body.nil?
+  res = JSON.parse(body) unless body.nil?
+  puts res
+  msg = res["message"] unless res["message"].nil?
+  puts msg
+  say(msg) unless msg.nil?
 end
 
 def send_match(text)
