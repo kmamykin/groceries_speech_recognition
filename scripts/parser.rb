@@ -4,6 +4,7 @@ require 'net/http'
 require 'uri'
 
 HOST = 'home-assistant.heroku.com'
+#HOST = '127.0.0.1:3002'
 
 @previous_match = nil
 
